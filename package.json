@@ -1,0 +1,11 @@
+{
+  "name": "add-a-little-ajax",
+  "version": "1.0.0",
+  "description": "adding ajax to json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Xolani Mgube",
+  "license": "ISC"
+}
