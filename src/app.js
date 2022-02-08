@@ -28,6 +28,10 @@ app.get('/new_visit', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/single-page-app', function(req, res) {
+  res.sendFile(__dirname + '/single-page-app.html');
+});
+
 // posting to new visitor path to render the html form data
 app.post('/success', urlencodedParser, async (req, res) => { 
   let visitorsTable = new Visitors() // creating an instance of the visitor table 
@@ -48,6 +52,17 @@ app.post('/success', urlencodedParser, async (req, res) => {
         data: addNew[0],
       });  
 });
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "ajax_info.txt", true);
+  xhttp.send();
+}
 
 app.listen(3000, () => {
   console.log('Listening on port 3000...')
