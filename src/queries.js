@@ -58,6 +58,30 @@ class Visitors {
           console.log("script closed")
         }
       }
+
+      // Deleting a single visitor from the database
+    async deleteAVisitor(visitorId) {
+      try {
+          await client.query("BEGIN")
+          let data = await client.query("delete from visitors where visitor_id=$1 returning *", [visitorId])
+          console.log("visitor deleted")
+          await client.query("COMMIT")
+          return data.rows
+      } catch (ex) {
+          console.log("Failed to delete visitor " + ex)
+      }
+  }
+
+  // viewing the visitor table on console
+  async viewTable() {
+    try{
+        await client.query("BEGIN")
+        let results = await client.query("select * from visitors") 
+        return results.rows
+    } catch (ex) {
+        console.log("Failed to view table" + ex)
+    }
+}
 }
 
 

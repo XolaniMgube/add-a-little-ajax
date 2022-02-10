@@ -47,22 +47,36 @@ app.post('/success', urlencodedParser, async (req, res) => {
       req.body.comments
       );
       
+      console.log(addNew)
       res.render('success.pug', 
       {
         data: addNew[0],
       });  
 });
 
-function loadDoc() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     document.getElementById("demo").innerHTML = this.responseText;
-    }
-  };
-  xhttp.open("GET", "ajax_info.txt", true);
-  xhttp.send();
-}
+app.delete('/deleteVisitor/:id', async(req, res) => {
+  let visitorsTable = new Visitors() // creating an instance of the visitor table
+  let id = req.params.id
+  let deleteVisitor = await visitorsTable.deleteAVisitor(id)
+  res.send(deleteVisitor)
+})
+
+app.get('/viewVisitors', async(req, res) => {
+  let visitorsTable = new Visitors() // creating an instance of the visitor table
+  let viewVisitors = await visitorsTable.viewTable()
+  res.send(viewVisitors)
+})
+
+// function loadDoc() {
+//   var xhttp = new XMLHttpRequest();
+//   xhttp.onreadystatechange = function() {
+//     if (this.readyState == 4 && this.status == 200) {
+//      document.getElementById("demo").innerHTML = this.responseText;
+//     }
+//   };
+//   xhttp.open("GET", "ajax_info.txt", true);
+//   xhttp.send();
+// }
 
 app.listen(3000, () => {
   console.log('Listening on port 3000...')

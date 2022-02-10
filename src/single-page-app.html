@@ -15,7 +15,37 @@
         <div><label>Time of Visit: </label><input type="time" name="time" id="time"></div>
         <div><label>Assisted By: </label><input type="text" name="assistedby" id="assistedBy"></div>
         <div><label>Visitor's comments: </label><input type="text" name="comments" id="comments"></div>
-        <div><input type="submit" id="submit" onclick="loadDoc()"></div>
+        <div><input type="submit" id="submit"></div>
     </form>
+
+    <table>
+        <th>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Date Of Visit</td>
+            <td>Time of Visit</td>
+            <td></td>
+        </th>
+    </table>
 </body>
+
+<script>
+    let submit = document.getElementById("submit")
+    submit.addEventListener("click", load)
+
+    function load() {
+        console.log("xolani, lets change the text to test")
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost/3000/viewVisitors', true)
+
+        xhr.onload = function() {
+            if(this.status == 200) {
+                console.log(this.responseText)
+            }
+        }
+
+        xhr.send()
+    }
+</script>
 </html>
