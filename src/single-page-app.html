@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
     <title>Document</title>
+    <style>
+        table, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <form method="POST">
@@ -18,34 +23,68 @@
         <div><input type="submit" id="submit"></div>
     </form>
 
-    <table>
-        <th>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Date Of Visit</td>
-            <td>Time of Visit</td>
-            <td></td>
-        </th>
+    <button id="View Visitors">press me</button>
+
+    <table class="table">
+        <tbody class="table-body">
+            <tr class="table-header">
+                <td>ID</td>
+                <td>Name</td>
+                <td>Age</td>
+                <td>Date Of Visit</td>
+                <td>Time of Visit</td>
+                <td>Assisted By</td>
+                <td>Comment</td>
+            </tr>
+        </tbody>
     </table>
 </body>
 
 <script>
-    let submit = document.getElementById("submit")
+    let submit = document.getElementById("press-me")
     submit.addEventListener("click", load)
 
     function load() {
         console.log("xolani, lets change the text to test")
 
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost/3000/viewVisitors', true)
+        xhr.open('GET', '/viewVisitors', true)
 
-        xhr.onload = function() {
+        xhr.onload = function returnData() {
             if(this.status == 200) {
-                console.log(this.responseText)
+                let data = JSON.parse(this.responseText)
+                console.log(data)
+
+                let table = document.querySelector('.table')
+                let tableHeader = document.querySelector('.table-header')
+                let tableBody = document.querySelector('.table-body')
+
+                for (let i = 0; i < data.length - 1; i++) {
+                    let newTable = tableBody.innerHTML += `
+                <tr>
+                    <td>${data[i].visitor_id}</td>
+                    <td>${data[i].visitor_name}</td>
+                    <td>${data[i].visitor_age}</td>
+                    <td>${data[i].date_of_visit}</td>
+                    <td>${data[i].time_of_visit}</td>
+                    <td>${data[i].assisted_by}</td>
+                    <td>${data[i].comments}</td>  
+                </tr>
+                `
+                }
+                // console.log(data.length)
+
+                
             }
         }
 
         xhr.send()
+        
     }
+
+
+    
+
+
 </script>
 </html>
