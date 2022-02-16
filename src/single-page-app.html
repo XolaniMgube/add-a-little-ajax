@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-    <form method="POST">
+    <form action="/success" method="POST">
         <h1>Visitor's Form</h1>
         <div><label>Visitor's Name: </label><input type="text" name="name" id="name"></div>
         <div><label>Visitor's Age: </label><input type="number" name="age" id="age"></div>
@@ -23,7 +23,7 @@
         <div><input type="submit" id="submit"></div>
     </form>
 
-    <button id="View Visitors">press me</button>
+    <button id="view-visitors">View Visitors</button>
 
     <table class="table">
         <tbody class="table-body">
@@ -35,31 +35,35 @@
                 <td>Time of Visit</td>
                 <td>Assisted By</td>
                 <td>Comment</td>
+                <td>Delete A Visitor</td>
             </tr>
         </tbody>
     </table>
 </body>
 
 <script>
-    let submit = document.getElementById("press-me")
-    submit.addEventListener("click", load)
+    window.onload = function() {
+        console.log("xolani")
+        load()
+    }
 
     function load() {
-        console.log("xolani, lets change the text to test")
+        console.log("njabulo, lets change the text to test")
 
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/viewVisitors', true)
 
-        xhr.onload = function returnData() {
+        xhr.onload = function() {
             if(this.status == 200) {
                 let data = JSON.parse(this.responseText)
                 console.log(data)
 
+                let viewVisitors = document.getElementById("view-visitors")
                 let table = document.querySelector('.table')
                 let tableHeader = document.querySelector('.table-header')
                 let tableBody = document.querySelector('.table-body')
 
-                for (let i = 0; i < data.length - 1; i++) {
+                for (let i = 0; i < data.length; i++) {
                     let newTable = tableBody.innerHTML += `
                 <tr>
                     <td>${data[i].visitor_id}</td>
@@ -68,19 +72,41 @@
                     <td>${data[i].date_of_visit}</td>
                     <td>${data[i].time_of_visit}</td>
                     <td>${data[i].assisted_by}</td>
-                    <td>${data[i].comments}</td>  
+                    <td>${data[i].comments}</td>
+                    <td><button class="${data[i].visitor_id} delete-button">Delete</button></td>  
                 </tr>
                 `
                 }
-                // console.log(data.length)
-
-                
             }
         }
 
         xhr.send()
         
-    }
+        }
+    
+        setTimeout(function(){
+            let deleteButton = document.querySelectorAll(".delete-button")
+            for (let i = 0; i < deleteButton.length; i++) {
+                deleteButton[i].addEventListener('click', function() {
+                    let id = deleteButton[i].classList[0]
+
+                    function deleting() {
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('DELETE', `/deleteVisitor/${id}`, true)
+
+                        xhr.onload = function() {
+                            if(this.status == 200) {
+                                let data = JSON.parse(this.responseText)
+                                console.log(data)
+                            }
+                        }
+                        xhr.send()
+                    }
+                    deleting() 
+                })
+            }
+        }, 2000);
+    
 
 
     
