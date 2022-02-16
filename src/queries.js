@@ -1,8 +1,6 @@
-// requiring frameworks to use 
 require('dotenv').config({path: '../.env'})
-let {Client} = require('pg')
+const {Client} = require('pg')
 
-// postgres class that will start the connection
 const client = new Client({
   user: process.env.PGUSER || 'user',
   password: process.env.PGPASSWORD || 'pass',
@@ -38,28 +36,27 @@ class Visitors {
     }
 
     async addVisitor(name, age, date, time, assistedBy, comments) {
-        try{
-          await client.query("BEGIN")
-          let data = await client.query(
-            `insert into visitors 
-            (visitor_name, visitor_age, date_of_visit, time_of_visit, assisted_by, comments) 
-            values ($1, $2, $3, $4, $5, $6) 
-            RETURNING *`,
-            [name, age, date, time, assistedBy, comments]
-            );
-          console.log("Inserted a new row")
-          await client.query("COMMIT")
-          return data.rows
-        }
-        catch(ex){
-          console.log("Failed to add visitor " + ex)
-        }
-        finally{  
-          console.log("script closed")
-        }
+      try{
+        await client.query("BEGIN")
+        let data = await client.query(
+          `insert into visitors 
+          (visitor_name, visitor_age, date_of_visit, time_of_visit, assisted_by, comments) 
+          values ($1, $2, $3, $4, $5, $6) 
+          RETURNING *`,
+          [name, age, date, time, assistedBy, comments]
+          );
+        console.log("Inserted a new row")
+        await client.query("COMMIT")
+        return data.rows
       }
+      catch(ex){
+        console.log("Failed to add visitor " + ex)
+      }
+      finally{  
+        console.log("script closed")
+      }
+    }
 
-      // Deleting a single visitor from the database
     async deleteAVisitor(visitorId) {
       try {
           await client.query("BEGIN")
@@ -72,7 +69,6 @@ class Visitors {
       }
   }
 
-  // viewing the visitor table on console
   async viewTable() {
     try{
         await client.query("BEGIN")

@@ -1,11 +1,9 @@
-// requiring frameworks to use
 const express = require('express');
 const bodyParser = require('body-parser');
 const {Client} = require('pg')
 
 require('dotenv').config({path: '../.env'})
 
-// postgres class that will start the connection
 const client = new Client({
   user: process.env.PGUSER || 'user',
   password: process.env.PGPASSWORD || 'pass',
@@ -14,16 +12,14 @@ const client = new Client({
   database: process.env.PGDATABASE || 'db'
 })
 
-// importing database queries
 const Visitors = require('./queries')
 
-let app = express(); // starting the program
-let urlencodedParser = bodyParser.urlencoded({extended: false}) // for viewing express on a pug template
+const app = express();
+const urlencodedParser = bodyParser.urlencoded({extended: false})
 
-app.set('view engine', 'pug'); // setting pug as view engine
-app.use('/css', express.static('css')) // linking css to the html
+app.set('view engine', 'pug');
+app.use('/css', express.static('css'))
 
-// home page
 app.get('/new_visit', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
@@ -32,38 +28,32 @@ app.get('/single-page-app', function(req, res) {
   res.sendFile(__dirname + '/single-page-app.html');
 });
 
-// posting to new visitor path to render the html form data
 app.post('/success', urlencodedParser, async (req, res) => { 
-  let visitorsTable = new Visitors() // creating an instance of the visitor table 
-  let newVisitorsTable = await visitorsTable.createTable() // this will create the visitor's table if it does not already exist
-  
-    // calling the addNewVisitor function
-    let addNew = await visitorsTable.addVisitor(
-      req.body.name,
-      req.body.age,
-      req.body.date,
-      req.body.time,
-      req.body.assistedby,
-      req.body.comments
-      );
+  const visitorsTable = new Visitors() 
+  const newVisitorsTable = await visitorsTable.createTable() 
+
+  const addNew = await visitorsTable.addVisitor(
+    req.body.name,
+    req.body.age,
+    req.body.date,
+    req.body.time,
+    req.body.assistedby,
+    req.body.comments
+    );
       
-      console.log(addNew)
-      // res.render('success.pug', 
-      // {
-      //   data: addNew[0],
-      // });  
+    console.log(addNew) 
 });
 
 app.delete('/deleteVisitor/:id', async(req, res) => {
-  let visitorsTable = new Visitors() // creating an instance of the visitor table
-  let id = req.params.id
-  let deleteVisitor = await visitorsTable.deleteAVisitor(id)
+  const visitorsTable = new Visitors()
+  const id = req.params.id
+  const deleteVisitor = await visitorsTable.deleteAVisitor(id)
   res.send(deleteVisitor)
 })
 
 app.get('/viewVisitors', async(req, res) => {
-  let visitorsTable = new Visitors() // creating an instance of the visitor table
-  let viewVisitors = await visitorsTable.viewTable()
+  const visitorsTable = new Visitors()
+  const viewVisitors = await visitorsTable.viewTable()
   res.send(viewVisitors)
 })
 
