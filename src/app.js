@@ -17,7 +17,6 @@ const Visitors = require('./queries')
 const app = express();
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
-app.set('view engine', 'pug');
 app.use('/css', express.static('css'))
 
 app.get('/new_visit', function(req, res) {

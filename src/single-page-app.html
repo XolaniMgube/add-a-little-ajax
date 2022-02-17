@@ -3,11 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Document</title>
+    <title>Single Page App</title>
     <style>
-        table, td {
-            border: 1px solid red;
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        body{
+            display: grid;
+            justify-items: center;
+        }
+
+        form{
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(7, 1fr);
+        }
+
+        div{
+            display: grid;
+            grid-template-columns: 500px;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        label{
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 1fr;
+            height: 20px;
+            padding-top: 20px;
+        }
+
+        input{
+            height: 25px;
         }
     </style>
 </head>
@@ -22,8 +54,6 @@
         <div><label>Visitor's comments: </label><input type="text" name="comments" id="comments"></div>
         <div><input type="submit" id="submit"></div>
     </form>
-
-    <button id="view-visitors">View Visitors</button>
 
     <table class="table">
         <tbody class="table-body">
@@ -43,25 +73,21 @@
 
 <script>
     window.onload = function() {
-        console.log("xolani")
-        load()
+        loadVisitors()
     }
 
-    function load() {
-        console.log("njabulo, lets change the text to test")
-
-        let xhr = new XMLHttpRequest();
+    function loadVisitors() {
+        const xhr = new XMLHttpRequest();
         xhr.open('GET', '/viewVisitors', true)
 
         xhr.onload = function() {
             if(this.status == 200) {
-                let data = JSON.parse(this.responseText)
-                console.log(data)
+                const data = JSON.parse(this.responseText)
 
-                let viewVisitors = document.getElementById("view-visitors")
-                let table = document.querySelector('.table')
-                let tableHeader = document.querySelector('.table-header')
-                let tableBody = document.querySelector('.table-body')
+                const viewVisitors = document.getElementById("view-visitors")
+                const table = document.querySelector('.table')
+                const tableHeader = document.querySelector('.table-header')
+                const tableBody = document.querySelector('.table-body')
 
                 for (let i = 0; i < data.length; i++) {
                     let newTable = tableBody.innerHTML += `
@@ -79,38 +105,29 @@
                 }
             }
         }
-
         xhr.send()
-        
-        }
+    }
     
-        setTimeout(function(){
-            let deleteButton = document.querySelectorAll(".delete-button")
-            for (let i = 0; i < deleteButton.length; i++) {
-                deleteButton[i].addEventListener('click', function() {
-                    let id = deleteButton[i].classList[0]
+    setTimeout(function(){
+        const deleteButton = document.querySelectorAll(".delete-button")
+        for (let i = 0; i < deleteButton.length; i++) {
+            deleteButton[i].addEventListener('click', function() {
+                const id = deleteButton[i].classList[0]
 
-                    function deleting() {
-                        let xhr = new XMLHttpRequest();
-                        xhr.open('DELETE', `/deleteVisitor/${id}`, true)
+                function deletingVisitor() {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('DELETE', `/deleteVisitor/${id}`, true)
 
-                        xhr.onload = function() {
-                            if(this.status == 200) {
-                                let data = JSON.parse(this.responseText)
-                                console.log(data)
-                            }
+                    xhr.onload = function() {
+                        if(this.status == 200) {
+                            let data = JSON.parse(this.responseText)
                         }
-                        xhr.send()
                     }
-                    deleting() 
-                })
-            }
-        }, 2000);
-    
-
-
-    
-
-
+                    xhr.send()
+                }
+                deletingVisitor() 
+            })
+        }
+    }, 2000);
 </script>
 </html>
