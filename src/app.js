@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const {Client} = require('pg')
+const port = 3000
 
 require('dotenv').config({path: '../.env'})
 
@@ -56,6 +57,6 @@ app.get('/viewVisitors', async(req, res) => {
   res.send(viewVisitors)
 })
 
-app.listen(3000, () => {
-  console.log('Listening on port 3000...')
+app.listen(port, () => {
+  console.log(`Listening on port ${port}...`)
 });
