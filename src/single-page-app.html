@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page App</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        body{
+            display: grid;
+            justify-items: center;
+        }
+
+        form{
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(7, 1fr);
+        }
+
+        div{
+            display: grid;
+            grid-template-columns: 500px;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        label{
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 1fr;
+            height: 20px;
+            padding-top: 20px;
+        }
+
+        input{
+            height: 25px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/success" method="POST">
+        <h1>Visitor's Form</h1>
+        <div><label>Visitor's Name: </label><input type="text" name="name" id="name"></div>
+        <div><label>Visitor's Age: </label><input type="number" name="age" id="age"></div>
+        <div><label>Date of Visit: </label><input type="date" name="date" id="date"></div>
+        <div><label>Time of Visit: </label><input type="time" name="time" id="time"></div>
+        <div><label>Assisted By: </label><input type="text" name="assistedby" id="assistedBy"></div>
+        <div><label>Visitor's comments: </label><input type="text" name="comments" id="comments"></div>
+        <div><input type="submit" id="submit"></div>
+    </form>
+
+    <table class="table">
+        <tbody class="table-body">
+            <tr class="table-header">
+                <td>ID</td>
+                <td>Name</td>
+                <td>Age</td>
+                <td>Date Of Visit</td>
+                <td>Time of Visit</td>
+                <td>Assisted By</td>
+                <td>Comment</td>
+                <td>Delete A Visitor</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+<script>
+    window.onload = function() {
+        loadVisitors()
+    }
+
+    function loadVisitors() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/viewVisitors', true)
+
+        xhr.onload = function() {
+            if(this.status == 200) {
+                const data = JSON.parse(this.responseText)
+
+                const viewVisitors = document.getElementById("view-visitors")
+                const table = document.querySelector('.table')
+                const tableHeader = document.querySelector('.table-header')
+                const tableBody = document.querySelector('.table-body')
+
+                for (let i = 0; i < data.length; i++) {
+                    let newTable = tableBody.innerHTML += `
+                <tr>
+                    <td>${data[i].visitor_id}</td>
+                    <td>${data[i].visitor_name}</td>
+                    <td>${data[i].visitor_age}</td>
+                    <td>${data[i].date_of_visit}</td>
+                    <td>${data[i].time_of_visit}</td>
+                    <td>${data[i].assisted_by}</td>
+                    <td>${data[i].comments}</td>
+                    <td><button class="${data[i].visitor_id} delete-button">Delete</button></td>  
+                </tr>
+                `
+                }
+            }
+        }
+        xhr.send()
+    }
+    
+    setTimeout(function(){
+        const deleteButton = document.querySelectorAll(".delete-button")
+        for (let i = 0; i < deleteButton.length; i++) {
+            deleteButton[i].addEventListener('click', function() {
+                const id = deleteButton[i].classList[0]
+
+                function deletingVisitor() {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('DELETE', `/deleteVisitor/${id}`, true)
+
+                    xhr.onload = function() {
+                        if(this.status == 200) {
+                            let data = JSON.parse(this.responseText)
+                        }
+                    }
+                    xhr.send()
+                }
+                deletingVisitor() 
+            })
+        }
+    }, 2000);
+</script>
+</html>
