@@ -1,18 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {Client} = require('pg')
 const port = 3000
-
-require('dotenv').config({path: '../.env'})
-
-const client = new Client({
-  user: process.env.PGUSER || 'user',
-  password: process.env.PGPASSWORD || 'pass',
-  host: process.env.PGHOST || 'localhost',
-  port: process.env.PGPORT || '5432',
-  database: process.env.PGDATABASE || 'db'
-})
-
+const {client} = require("./client-connection")
 const Visitors = require('./queries')
 
 const app = express();
