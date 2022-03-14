@@ -52,6 +52,9 @@ setTimeout(function(){
                 xhr.send()
             }
             deletingVisitor() 
+            document.location.reload()
         })
-    }
+        
+    } 
+    
 }, 2000);

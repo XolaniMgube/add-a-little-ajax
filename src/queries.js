@@ -68,9 +68,7 @@ class Visitors {
     } catch (ex) {
         console.log("Failed to view table" + ex)
     }
+  }
 }
-}
-
-
 
 module.exports = Visitors
