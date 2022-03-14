@@ -1,32 +1,18 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const {Client} = require('pg')
-const port = 3000
-
-require('dotenv').config({path: '../.env'})
-
-const client = new Client({
-  user: process.env.PGUSER || 'user',
-  password: process.env.PGPASSWORD || 'pass',
-  host: process.env.PGHOST || 'localhost',
-  port: process.env.PGPORT || '5432',
-  database: process.env.PGDATABASE || 'db'
-})
-
+const express = require('express')
+const bodyParser = require('body-parser')
+const port = 3000;
+const {client} = require("./client-connection")
 const Visitors = require('./queries')
+const path = require('path')
 
-const app = express();
+const app = express()
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 
-app.use('/css', express.static('css'))
-
-app.get('/new_visit', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+app.use(express.static('src/public'))
 
 app.get('/single-page-app', function(req, res) {
-  res.sendFile(__dirname + '/single-page-app.html');
-});
+  res.sendFile(path.join(__dirname, '/public/single-page-app.html'))
+})
 
 app.post('/success', urlencodedParser, async (req, res) => { 
   const visitorsTable = new Visitors() 
@@ -39,10 +25,10 @@ app.post('/success', urlencodedParser, async (req, res) => {
     req.body.time,
     req.body.assistedby,
     req.body.comments
-    );
+    )
       
     console.log(addNew) 
-});
+})
 
 app.delete('/deleteVisitor/:id', async(req, res) => {
   const visitorsTable = new Visitors()
@@ -59,4 +45,4 @@ app.get('/viewVisitors', async(req, res) => {
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`)
-});
+})
