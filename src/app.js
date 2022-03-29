@@ -26,8 +26,7 @@ app.post('/success', urlencodedParser, async (req, res) => {
     req.body.assistedby,
     req.body.comments
     )
-      
-    console.log(addNew) 
+    res.redirect("/single-page-app") 
 })
 
 app.delete('/deleteVisitor/:id', async(req, res) => {
