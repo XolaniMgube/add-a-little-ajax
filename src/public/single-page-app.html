@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <form action="/success" method="POST">
-        <h1>Visitor's Form</h1>
-        <div><label>Visitor's Name: </label><input type="text" name="name" id="name"></div>
-        <div><label>Visitor's Age: </label><input type="number" name="age" id="age"></div>
-        <div><label>Date of Visit: </label><input type="date" name="date" id="date"></div>
-        <div><label>Time of Visit: </label><input type="time" name="time" id="time"></div>
-        <div><label>Assisted By: </label><input type="text" name="assistedby" id="assistedBy"></div>
-        <div><label>Visitor's comments: </label><input type="text" name="comments" id="comments"></div>
+    <form action="/success" method="POST" class="add-visitor-form">
+        <h1>ADD NEW VISITOR</h1>
+        <div><label>Visitor's Name: </label><input type="text" name="names" id="name"></div>
+        <div><label>Visitor's Age: </label><input type="number" name="ages" id="age"></div>
+        <div><label>Date of Visit: </label><input type="date" name="dates" id="date"></div>
+        <div><label>Time of Visit: </label><input type="time" name="times" id="time"></div>
+        <div><label>Assisted By: </label><input type="text" name="assistedbys" id="assistedBy"></div>
+        <div><label>Visitor's comments: </label><input type="text" name="commentss" id="comments"></div>
         <div><input type="submit" id="submit"></div>
     </form>
 
@@ -32,6 +32,18 @@
             </tr>
         </tbody>
     </table>
+
+    <form method="PUT" class="update-form">
+        <h1 class="update-heading">UPDATE VISITOR - ID: </h1>
+        
+        <div><label>Visitor's Name: </label><input type="text" name="name" id="name"></div>
+        <div><label>Visitor's Age: </label><input type="number" name="age" id="age"></div>
+        <div><label>Date of Visit: </label><input type="date" name="date" id="date"></div>
+        <div><label>Time of Visit: </label><input type="time" name="time" id="time"></div>
+        <div><label>Assisted By: </label><input type="text" name="assistedby" id="assistedBy"></div>
+        <div><label>Visitor's comments: </label><input type="text" name="comments" id="comments"></div>
+        <div><input type="submit" id="submit" class="submit-update"></div>
+    </form>
 </body>
 
 <script src="/ajax.js"></script>

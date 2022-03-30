@@ -34,3 +34,7 @@ label{
 input{
     height: 25px;
 }
+
+.update-form {
+    display: none;
+}

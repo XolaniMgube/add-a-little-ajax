@@ -1,6 +1,10 @@
 window.onload = function() {
     loadVisitors()
+    // update()
 }
+
+
+
 
 function loadVisitors() {
     const xhr = new XMLHttpRequest();
@@ -25,7 +29,8 @@ function loadVisitors() {
                 <td>${data[i].time_of_visit}</td>
                 <td>${data[i].assisted_by}</td>
                 <td>${data[i].comments}</td>
-                <td><button class="${data[i].visitor_id} delete-button">Delete</button></td>  
+                <td><button class="${data[i].visitor_id} delete-button">Delete</button></td>
+                <td><button class="${data[i].visitor_id} update-button">Update</button></td>  
             </tr>
             `
             }
@@ -58,3 +63,69 @@ setTimeout(function(){
     } 
     
 }, 2000);
+
+// setTimeout(function() {
+//     let updateButton = document.querySelectorAll('.update-button')
+//     for (let i = 0; i < updateButton.length; i++) {
+//         updateButton[i].addEventListener('click', function() {
+//             const id = updateButton[i].classList[0]
+//             console.log(id)
+//             function updateVisitor() {
+//                 const xhr = new XMLHttpRequest();
+//                 console.log(xhr)
+//                 xhr.open('PUT', `/updateVisitor/${id}`, true)
+//                 xhr.onload = function() {
+//                     if(this.status == 200) {
+//                         let data = JSON.parse(this.responseText)
+//                     }
+//                 }
+//                 xhr.send()
+//             }
+//             updateVisitor()
+//         })
+//     }
+// }, 2000)
+
+
+setTimeout(function openUpdate() {
+    let updateButton = document.querySelectorAll('.update-button')
+    let updateForm = document.querySelector('.update-form')
+    let submitUpdate = document.querySelector('.submit-update')
+    let addVisitorForm = document.querySelector('.add-visitor-form')
+    let table = document.querySelector('.table')
+    let updateHeading = document.querySelector('.update-heading')
+    // console.log(submitUpdate)
+    for (let i = 0; i < updateButton.length; i++) {
+        updateButton[i].addEventListener('click', function() {
+            const id = updateButton[i].classList[0]
+            console.log(id)
+            updateForm.style.display = 'block'
+            addVisitorForm.style.display = 'none'
+            table.style.display = 'none'
+            updateHeading.innerHTML = updateHeading.innerText + id
+
+            
+        submitUpdate.addEventListener('click', function() {
+            function updateVisitor() {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', `/updateVisitor/${id}`, true)
+                xhr.onload = function() {
+                    if(this.status == 200) {
+                        let data = JSON.parse(this.responseText)
+                    }
+                }
+                xhr.send()
+                addVisitorForm.style.display = 'block'
+                table.style.display = 'block'
+            }
+            updateVisitor()
+        })
+        
+
+        })
+    }
+}, 2000)
+
+
+
+

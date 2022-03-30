@@ -14,10 +14,13 @@ app.get('/single-page-app', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/single-page-app.html'))
 })
 
+app.get('/update-visitor', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/update-visitor.html'))
+})
+
 app.post('/success', urlencodedParser, async (req, res) => { 
   const visitorsTable = new Visitors() 
   const newVisitorsTable = await visitorsTable.createTable() 
-
   const addNew = await visitorsTable.addVisitor(
     req.body.name,
     req.body.age,
@@ -26,6 +29,7 @@ app.post('/success', urlencodedParser, async (req, res) => {
     req.body.assistedby,
     req.body.comments
     )
+    
     res.redirect("/single-page-app") 
 })
 
@@ -34,6 +38,23 @@ app.delete('/deleteVisitor/:id', async(req, res) => {
   const id = req.params.id
   const deleteVisitor = await visitorsTable.deleteAVisitor(id)
   res.send(deleteVisitor)
+})
+
+app.put('/updateVisitor/:id', async(req, res) => {
+  let visitorsTable = new Visitors()
+  let id = req.params.id
+  // console.log(req)
+  let updateVisitor = await visitorsTable.updateVisitor(
+    req.body.names,
+    req.body.ages,
+    req.body.dates,
+    req.body.times,
+    req.body.assistedbys,
+    req.body.commentss,
+    id
+  )
+  // console.log(req.body)
+  res.redirect("/single-page-app")
 })
 
 app.get('/viewVisitors', async(req, res) => {
