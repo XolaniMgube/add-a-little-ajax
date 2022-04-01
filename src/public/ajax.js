@@ -9,23 +9,20 @@ function loadVisitors() {
     xhr.onload = function() {
         if(this.status == 200) {
             const data = JSON.parse(this.responseText)
-
-            const viewVisitors = document.getElementById("view-visitors")
-            const table = document.querySelector('.table')
-            const tableHeader = document.querySelector('.table-header')
             const tableBody = document.querySelector('.table-body')
 
             for (let i = 0; i < data.length; i++) {
                 let newTable = tableBody.innerHTML += `
-            <tr>
+            <tr class="row-id-${data[i].visitor_id}">
                 <td>${data[i].visitor_id}</td>
-                <td>${data[i].visitor_name}</td>
-                <td>${data[i].visitor_age}</td>
-                <td>${data[i].date_of_visit}</td>
-                <td>${data[i].time_of_visit}</td>
-                <td>${data[i].assisted_by}</td>
-                <td>${data[i].comments}</td>
-                <td><button class="${data[i].visitor_id} delete-button">Delete</button></td>  
+                <td class="table-data-${data[i].visitor_id}">${data[i].visitor_name}</td>
+                <td class="table-data-${data[i].visitor_id}">${data[i].visitor_age}</td>
+                <td class="table-data-${data[i].visitor_id}">${data[i].date_of_visit}</td>
+                <td class="table-data-${data[i].visitor_id}">${data[i].time_of_visit}</td>
+                <td class="table-data-${data[i].visitor_id}">${data[i].assisted_by}</td>
+                <td class="table-data-${data[i].visitor_id}">${data[i].comments}</td>
+                <td><button class="${data[i].visitor_id} delete-button">Delete</button></td>
+                <td><button class="${data[i].visitor_id} update-button">Update</button></td>  
             </tr>
             `
             }
@@ -54,7 +51,54 @@ setTimeout(function(){
             deletingVisitor() 
             document.location.reload()
         })
-        
     } 
-    
 }, 2000);
+
+
+setTimeout(function() {
+    const updateButton = document.querySelectorAll('.update-button')
+    const updateForm = document.querySelector('.update-form')
+    const submitUpdate = document.querySelector('.submit-update')
+    const addVisitorForm = document.querySelector('.add-visitor-form')
+    const table = document.querySelector('.table')
+    const updateHeading = document.querySelector('.update-heading')
+    const updateFormFields = document.querySelectorAll('.update-field')
+
+    for (let i = 0; i < updateButton.length; i++) {
+        updateButton[i].addEventListener('click', function() {
+            const id = updateButton[i].classList[0]
+            const columnData = document.querySelectorAll('.table-data-'+id)
+            
+            columnData[2].innerText = columnData[2].innerText.match(/.{10}/)
+            for (let j = 0; j < columnData.length; j++) {
+                updateFormFields[j].value = columnData[j].innerText
+            }
+
+            updateForm.action = updateForm.action + '/' +id
+            updateForm.style.display = 'block'
+            addVisitorForm.style.display = 'none'
+            table.style.display = 'none'
+            updateHeading.innerHTML = updateHeading.innerText + id
+
+            submitUpdate.addEventListener('click', function() {
+                function updateVisitor() {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', `/updateVisitor/${id}`, true)
+                    xhr.onload = function() {
+                        if(this.status == 200) {
+                            let data = JSON.parse(this.responseText)
+                        }
+                    }
+                    xhr.send()
+                    addVisitorForm.style.display = 'block'
+                    table.style.display = 'block'
+                }
+                updateVisitor()
+            })
+        })
+    }
+}, 2000)
+
+
+
+

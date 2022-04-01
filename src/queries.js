@@ -7,7 +7,7 @@ class Visitors {
       try{
         await client.query("BEGIN")
         await client.query(
-          `create table if not exists visitors
+          `Create Table if not exists visitors
           (visitor_id serial primary key, 
           visitor_name varchar(20),
           visitor_age int, 
@@ -69,6 +69,19 @@ class Visitors {
         console.log("Failed to view table" + ex)
     }
   }
+
+  async updateVisitor(visitorName, visitorAge, dateOfVisit, timeOfVisit, assistedBy, comments, idToBeUpdated) {
+    try {
+        await client.query("BEGIN")
+        let data = await client.query("update visitors set visitor_name = $1, visitor_age = $2, date_of_visit = $3, time_of_visit = $4, assisted_by = $5, comments = $6 where visitor_id = $7 returning *", [visitorName, visitorAge, dateOfVisit, timeOfVisit, assistedBy, comments, idToBeUpdated])
+        console.log("visitor updated")
+        await client.query("COMMIT")
+        // console.log(data.rows)
+        return data.rows
+    } catch (ex) {
+        console.log("Failed to update visitor" + ex)
+    }
+}
 }
 
 module.exports = Visitors
