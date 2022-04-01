@@ -9,12 +9,12 @@
 <body>
     <form action="/success" method="POST" class="add-visitor-form">
         <h1>ADD NEW VISITOR</h1>
-        <div><label>Visitor's Name: </label><input type="text" name="names" id="name"></div>
-        <div><label>Visitor's Age: </label><input type="number" name="ages" id="age"></div>
-        <div><label>Date of Visit: </label><input type="date" name="dates" id="date"></div>
-        <div><label>Time of Visit: </label><input type="time" name="times" id="time"></div>
-        <div><label>Assisted By: </label><input type="text" name="assistedbys" id="assistedBy"></div>
-        <div><label>Visitor's comments: </label><input type="text" name="commentss" id="comments"></div>
+        <div><label>Visitor's Name: </label><input type="text" name="addName" id="name"></div>
+        <div><label>Visitor's Age: </label><input type="number" name="addAge" id="age"></div>
+        <div><label>Date of Visit: </label><input type="date" name="addDate" id="date"></div>
+        <div><label>Time of Visit: </label><input type="time" name="addTime" id="time"></div>
+        <div><label>Assisted By: </label><input type="text" name="addAssistedby" id="assistedBy"></div>
+        <div><label>Visitor's comments: </label><input type="text" name="addComments" id="comments"></div>
         <div><input type="submit" id="submit"></div>
     </form>
 
@@ -28,20 +28,20 @@
                 <td>Time of Visit</td>
                 <td>Assisted By</td>
                 <td>Comment</td>
-                <td>Delete A Visitor</td>
+                <td>Delete Visitor</td>
+                <td>Update Visitor</td>
             </tr>
         </tbody>
     </table>
 
-    <form method="PUT" class="update-form">
+    <form method="POST" action="/updateVisitor" class="update-form">
         <h1 class="update-heading">UPDATE VISITOR - ID: </h1>
-        
-        <div><label>Visitor's Name: </label><input type="text" name="name" id="name"></div>
-        <div><label>Visitor's Age: </label><input type="number" name="age" id="age"></div>
-        <div><label>Date of Visit: </label><input type="date" name="date" id="date"></div>
-        <div><label>Time of Visit: </label><input type="time" name="time" id="time"></div>
-        <div><label>Assisted By: </label><input type="text" name="assistedby" id="assistedBy"></div>
-        <div><label>Visitor's comments: </label><input type="text" name="comments" id="comments"></div>
+        <div><label>Visitor's Name: </label><input type="text" name="updateName" id="name" class="update-field"></div>
+        <div><label>Visitor's Age: </label><input type="number" name="updateAge" id="age" class="update-field"></div>
+        <div><label>Date of Visit: </label><input type="date" name="updateDate" id="date" class="update-field"></div>
+        <div><label>Time of Visit: </label><input type="time" name="updateTime" id="time" class="update-field"></div>
+        <div><label>Assisted By: </label><input type="text" name="updateAssistedby" id="assistedBy" class="update-field"></div>
+        <div><label>Visitor's comments: </label><input type="text" name="updateComments" id="comments" class="update-field"></div>
         <div><input type="submit" id="submit" class="submit-update"></div>
     </form>
 </body>

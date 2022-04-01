@@ -10,7 +10,9 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 app.use(express.static('src/public'))
 
-app.get('/single-page-app', function(req, res) {
+app.get('/single-page-app', async (req, res) => {
+  const visitorsTable = new Visitors()
+  const newVisitorsTable = await visitorsTable.createTable()
   res.sendFile(path.join(__dirname, '/public/single-page-app.html'))
 })
 
@@ -19,17 +21,15 @@ app.get('/update-visitor', function(req, res) {
 })
 
 app.post('/success', urlencodedParser, async (req, res) => { 
-  const visitorsTable = new Visitors() 
-  const newVisitorsTable = await visitorsTable.createTable() 
+  const visitorsTable = new Visitors()  
   const addNew = await visitorsTable.addVisitor(
-    req.body.name,
-    req.body.age,
-    req.body.date,
-    req.body.time,
-    req.body.assistedby,
-    req.body.comments
+    req.body.addName,
+    req.body.addAge,
+    req.body.addDate,
+    req.body.addTime,
+    req.body.addAssistedby,
+    req.body.addComments
     )
-    
     res.redirect("/single-page-app") 
 })
 
@@ -40,20 +40,18 @@ app.delete('/deleteVisitor/:id', async(req, res) => {
   res.send(deleteVisitor)
 })
 
-app.put('/updateVisitor/:id', async(req, res) => {
-  let visitorsTable = new Visitors()
-  let id = req.params.id
-  // console.log(req)
-  let updateVisitor = await visitorsTable.updateVisitor(
-    req.body.names,
-    req.body.ages,
-    req.body.dates,
-    req.body.times,
-    req.body.assistedbys,
-    req.body.commentss,
+app.post('/updateVisitor/:id', urlencodedParser, async(req, res) => {
+  const visitorsTable = new Visitors()
+  const id = req.params.id
+  const updateVisitor = await visitorsTable.updateVisitor(
+    req.body.updateName,
+    req.body.updateAge,
+    req.body.updateDate,
+    req.body.updateTime,
+    req.body.updateAssistedby,
+    req.body.updateComments,
     id
   )
-  // console.log(req.body)
   res.redirect("/single-page-app")
 })
 
